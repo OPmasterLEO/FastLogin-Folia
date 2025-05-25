@@ -1,0 +1,65 @@
+# project data for Bukkit in order to register our plugin with all it's components
+# ${-} are variables from Maven (pom.xml) which will be replaced after the build
+name: ${project.parent.name}
+version: ${project.version}-${git.commit.id.abbrev}
+main: ${project.groupId}.${project.artifactId}.${project.name}
+
+# meta data for plugin managers
+authors: [games647, 'https://github.com/games647/FastLogin/graphs/contributors']
+description: |
+    ${project.description}
+website: ${project.url}
+dev-url: ${project.url}
+folia-supported: true
+# This plugin doesn't have to be transformed for compatibility with Minecraft >= 1.13
+api-version: '1.13'
+
+softdepend:
+    # We depend on either ProtocolLib or ProtocolSupport
+    - ProtocolSupport
+    - ProtocolLib
+    # Premium variable
+    - PlaceholderAPI
+    # Bedrock Player Bridge
+    - Geyser-Spigot
+    - floodgate
+    # Auth plugins
+    - AuthMe
+    - CrazyLogin
+    - LoginSecurity
+    - LogIt
+    - UltraAuth
+    - xAuth
+    - Passky
+
+commands:
+    ${project.parent.name}:
+        description: 'Label the invoker as premium'
+        aliases: [prem, premium, loginfast]
+        usage: /<command> [player]
+        permission: ${project.artifactId}.command.premium
+
+    cracked:
+        description: 'Label the invoker or the player specified as cracked if marked premium before'
+        aliases: [unpremium]
+        usage: /<command> [player]
+        permission: ${project.artifactId}.command.cracked
+
+permissions:
+    ${project.artifactId}.command.premium:
+        description: 'Label themselves as premium'
+        default: true
+
+    ${project.artifactId}.command.premium.other:
+        description: 'Label others as premium'
+        children:
+            ${project.artifactId}.command.premium: true
+
+    ${project.artifactId}.command.cracked:
+        description: 'Label themselves as cracked'
+        default: true
+
+    ${project.artifactId}.command.cracked.other:
+        description: 'Label others as cracked'
+        children:
+            ${project.artifactId}.command.cracked: true
